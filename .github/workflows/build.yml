@@ -7,22 +7,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kivy/buildozer:latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build Android APK
-        id: buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        with:
-          command: buildozer android debug
-          workdir: .
-          buildozer_version: stable
+      - name: Build APK
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: GEOSINT-X-APK
-          path: ${{ steps.buildozer.outputs.filename }}
-          
+          path: bin/*.apk
