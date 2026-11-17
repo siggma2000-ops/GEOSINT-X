@@ -26,8 +26,13 @@ jobs:
           test -f main.py
           test -f buildozer.spec
 
+      - name: Show Android configuration
+        run: |
+          grep -E '^(android.api|android.minapi|android.ndk_api)' buildozer.spec
+
       - name: Build APK
         run: |
+          set -o pipefail
           buildozer -v --stacktrace android debug 2>&1 | tee build.log
 
       - name: Upload APK
@@ -45,3 +50,4 @@ jobs:
           name: GEOSINT-X-Build-Log
           path: build.log
           if-no-files-found: warn
+          
